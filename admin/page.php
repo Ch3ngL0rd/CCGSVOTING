@@ -31,12 +31,12 @@ include '../utils.php';
           // http://localhost:8080/admin/page.php?name=zac&information=123&max_votes=123&start_date=29%2F11%2F2002&end_date=29%2F11%2F2002&pageID=create&submit=true
           if ($_GET["pageID"] == "create") {
             if (isset($_GET["submit"])) {
-              parse_create($_GET);
+              parse_create_ballot($_GET);
             } else {
               include 'create.html';
             }
           } else if ($_GET["pageID"] == "manage") {
-            include 'manage.php';
+            include 'manageBallot.php';
           } else if ($_GET["pageID"] == "view") {
             echo "<h2>View</h2>";
           }
