@@ -35,6 +35,34 @@ function get_highest_ballot() {
     return "SELECT MAX(BallotID) FROM BallotInformation";
 }
 
+function get_all_ballots($student_id) {
+    global $connection;
+    // fetches all ballots from 
+    $query = "SELECT * FROM Voter WHERE StudentID=$student_id";
+    if ($result = $connection->query($query)) {
+        return $result->fetch_all();
+    }
+    return [];
+}
+
+// Given array of ballot_id, fetch information
+function get_ballot_information($ballot_id_array) {
+    global $connection;
+    $str_id_representation = implode(',',$ballot_id_array);
+    $query = "SELECT * FROM BallotInformation WHERE BallotID in ($str_id_representation)";
+    if ($result = $connection->query($query)) {
+        return $result->fetch_all();
+    }
+    return [];
+}
+
+// pass in row from voter_information
+function has_voted($voter_information) {
+    if (gettype($voter_information[3]) != "NULL") {
+        return true;
+    }
+    return false;
+}
 
 // Talks to Synergetic to fetch a students name and photo from a student_id
 function fetch_student($student_id) {
@@ -141,6 +169,5 @@ function parse_create_ballot($array) {
             echo "Error: " . $sql . "<br>" . $connection->error;
         }
     }
-
 }
 ?>

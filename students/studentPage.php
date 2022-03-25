@@ -1,3 +1,20 @@
+<?php
+include '../utils.php';
+$data = get_all_ballots($_GET["user_id"]);
+$voted = [];
+$unvoted = [];
+foreach ($data as $row) {
+    if (has_voted($row) == true) {
+        array_push($voted,$row);
+    } else {
+        array_push($unvoted,$row);
+    }
+}
+$voted_id_information = array_map(fn($value): int => $value[2],$voted);
+$voted_ballot_information = get_ballot_information($voted_id_information);
+$unvoted_id_information = array_map(fn($value): int => $value[2],$unvoted);
+$unvoted_ballot_information = get_ballot_information($unvoted_id_information);
+?>
 <!doctype html>
 <html lang="en">
     <head>
@@ -16,7 +33,7 @@
             <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
                 <div href="/" class="d-flex align-items-center me-md-auto text-dark text-decoration-none">
                   <img src="../components/ccgs-logo.png" class="me-4" width="50" height="90"></img>
-                  <span class="fs-3 fw-bold">Christ Church Grammar School Voting </span>
+                  <span class="fs-3 fw-bold">Christ Church Grammar School Prefect Voting </span>
                 </div>
             </header>
 
@@ -32,36 +49,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Test</td>
-                                <td>Data</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Fourteen</td>
-                                <td>Poops</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Fourteen</td>
-                                <td>Poops</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Fourteen</td>
-                                <td>Poops</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Fourteen</td>
-                                <td>Poops</td>
-                            </tr>
+                            <?php
+                            // In here we will echo out html that displays what ballots the user is in
+                                foreach ($unvoted_ballot_information as $row) {
+                                    echo "<tr onclick=\"alert('Entering $row[1]!')\">";
+                                        echo "<th>$row[0]</th>";
+                                        echo "<td>$row[1]</td>";
+                                        echo "<td>" . substr($row[5],0,10) . "</td>"; //Slice to pretty print
+                                    echo "</tr>";
+                                }
+                            ?>
                         </tbody>
                     </table>
                 </div>
@@ -76,18 +73,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                            </tr>
-                            <tr>
-                                <td>Test</td>
-                                <td>Data</td>
-                            </tr>
-                            <tr>
-                                <td>Fourteen</td>
-                                <td>Poops</td>
-                            </tr>
+                            <?php
+                            // In here we will echo out html that displays what ballots the user is in
+                                foreach ($voted_ballot_information as $row) {
+                                    echo "<tr>";
+                                        echo "<td>$row[1]</td>";
+                                        echo "<td>" . substr($row[5],0,10) . "</td>"; //Slice to pretty print
+                                    echo "</tr>";
+                                }
+                            ?>
                         </tbody>
                     </table>
                 </div>
