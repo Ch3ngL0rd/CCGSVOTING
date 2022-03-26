@@ -56,6 +56,15 @@ function get_ballot_information($ballot_id_array) {
     return [];
 }
 
+function get_candidates($ballot_id) {
+    global $connection;
+    $query = "SELECT * FROM Candidate WHERE BallotID = $ballot_id";
+    if ($result = $connection->query($query)) {
+        return $result->fetch_all();
+    }
+    return [];
+}
+
 // pass in row from voter_information
 function has_voted($voter_information) {
     if (gettype($voter_information[3]) != "NULL") {

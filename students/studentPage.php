@@ -1,5 +1,6 @@
 <?php
 include '../utils.php';
+include '../userutils.php';
 $data = get_all_ballots($_GET["user_id"]);
 $voted = [];
 $unvoted = [];
@@ -24,9 +25,15 @@ $unvoted_ballot_information = get_ballot_information($unvoted_id_information);
 
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="../components/bootstrap.min.css">
-        <link rel="stylesheet" href="components/custom.css">
+        <link rel="stylesheet" href="custom.css">
 
         <title>CCGS VOTE</title>
+        <script>
+            function enter_ballot(ballot_id,user_id) {
+                console.log(ballot_id,user_id);
+                alert("entering ballot "+ballot_id+" with ID "+user_id);
+            }
+        </script>
     </head>
     <body>
         <div class="container">
@@ -52,7 +59,7 @@ $unvoted_ballot_information = get_ballot_information($unvoted_id_information);
                             <?php
                             // In here we will echo out html that displays what ballots the user is in
                                 foreach ($unvoted_ballot_information as $row) {
-                                    echo "<tr onclick=\"alert('Entering $row[1]!')\">";
+                                    echo "<tr onclick=\"document.location.href='studentVoting.php?user_id=" . $_GET["user_id"] . "&ballot_id=$row[0]'\">";
                                         echo "<th>$row[0]</th>";
                                         echo "<td>$row[1]</td>";
                                         echo "<td>" . substr($row[5],0,10) . "</td>"; //Slice to pretty print

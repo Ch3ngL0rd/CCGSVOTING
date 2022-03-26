@@ -1,0 +1,17 @@
+.table-wrapper-scroll-y {
+    display: block;
+}
+
+.student-images {
+    display : flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap : wrap;
+    gap : 150px 40px;
+}
+
+.image-holder {
+    width : 400;
+    height : 300;
+    text-align: center;
+}
