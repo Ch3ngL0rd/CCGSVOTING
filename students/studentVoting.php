@@ -6,7 +6,6 @@ $ballot_id = $_GET["ballot_id"];
 $candidate_info = get_candidates($ballot_id);
 ?>
 
-
 <!doctype html>
 <html lang="en">
     <head>

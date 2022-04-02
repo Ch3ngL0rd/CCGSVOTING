@@ -1,5 +1,6 @@
 <?php
 include '../utils.php';
+$user_id = $_GET["user_id"]; // used in sidebar & manageBallot
 ?>
 <!doctype html>
 <html lang="en">
@@ -20,7 +21,7 @@ include '../utils.php';
   <div class="container-fluid">
     <div class="row">
       <?php
-      include 'sidebar.html';
+      include 'sidebar.php';
       ?>
 
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
@@ -37,6 +38,8 @@ include '../utils.php';
             }
           } else if ($_GET["pageID"] == "manage") {
             include 'manageBallot.php';
+          } else if ($_GET["pageID"] == "manageBallot") {
+            echo "<h2>Managing a ballot</h2>";
           } else if ($_GET["pageID"] == "view") {
             echo "<h2>View</h2>";
           }

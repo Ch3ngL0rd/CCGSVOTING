@@ -78,14 +78,13 @@ function fetch_student($student_id) {
     return "Zac";
 }
 
-// Checks that user can create a ballot
-function is_staff($admin_id) {
-
-}
-
-// Check if user can view ballots
-function can_view($admin_id) {
-    
+function fetch_ballot_manage($user_id) {
+    global $connection;
+    $query = "SELECT * FROM BallotInformation WHERE CreatorID = $user_id";
+    if ($result = $connection->query($query)) {
+        return $result->fetch_all();
+    }
+    return [];
 }
 
 // we need to have a function that returns a list of ids to 
