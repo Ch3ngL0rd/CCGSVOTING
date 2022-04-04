@@ -11,10 +11,20 @@ foreach ($data as $row) {
         array_push($unvoted,$row);
     }
 }
-$voted_id_information = array_map(fn($value): int => $value[2],$voted);
-$voted_ballot_information = get_ballot_information($voted_id_information);
-$unvoted_id_information = array_map(fn($value): int => $value[2],$unvoted);
-$unvoted_ballot_information = get_ballot_information($unvoted_id_information);
+if (count($voted) > 0) {
+    $voted_id_information = array_map(fn($value): int => $value[2],$voted);
+    $voted_ballot_information = get_ballot_information($voted_id_information);
+} else {
+    $voted_ballot_information = [];
+}
+if (count($unvoted) > 0) {
+    $unvoted_id_information = array_map(fn($value): int => $value[2],$unvoted);
+    $unvoted_ballot_information = get_ballot_information($unvoted_id_information);
+} else {
+    $unvoted_ballot_information = [];
+}
+
+
 ?>
 <!doctype html>
 <html lang="en">

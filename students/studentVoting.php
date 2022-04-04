@@ -35,14 +35,14 @@ $candidate_info = get_candidates($ballot_id);
         <br>
         <div class="container">
             <div class="row align-items-start">
-                <div class="col-8">
+                <div class="col-9">
                     <div class="student-images">
                         <?php
                         print_images($candidate_info);
                         ?>
                     </div>
                 </div>
-                <div class="col-4">
+                <div class="col-3">
                     Voting
                 </div>
             </div>

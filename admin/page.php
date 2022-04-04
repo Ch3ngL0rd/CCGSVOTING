@@ -8,7 +8,6 @@ $user_id = $_GET["user_id"]; // used in sidebar & manageBallot
     <meta crset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Control Panel</title>
-
     <!-- Bootstrap core CSS -->
     <link href="../components/bootstrap.min.css" rel="stylesheet">
   </head>
@@ -37,9 +36,9 @@ $user_id = $_GET["user_id"]; // used in sidebar & manageBallot
               include 'create.html';
             }
           } else if ($_GET["pageID"] == "manage") {
-            include 'manageBallot.php';
+            include 'manageBallotView.php';
           } else if ($_GET["pageID"] == "manageBallot") {
-            echo "<h2>Managing a ballot</h2>";
+            include 'manageBallot.php';
           } else if ($_GET["pageID"] == "view") {
             echo "<h2>View</h2>";
           }

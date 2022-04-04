@@ -65,6 +65,16 @@ function get_candidates($ballot_id) {
     return [];
 }
 
+function change_candidate($candidate_id,$bio) {
+    global $connection;
+    $query = "UPDATE CANDIDATE SET Bio = '$bio' WHERE StudentID = $candidate_id";
+    if ($connection->query($query) === TRUE) {
+
+    } else {
+        echo "Error: " . $sql . "<br>" . $connection->error;
+    }
+}
+
 // pass in row from voter_information
 function has_voted($voter_information) {
     if (gettype($voter_information[3]) != "NULL") {
@@ -86,6 +96,7 @@ function fetch_ballot_manage($user_id) {
     }
     return [];
 }
+
 
 // we need to have a function that returns a list of ids to 
 
