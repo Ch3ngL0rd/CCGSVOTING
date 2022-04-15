@@ -1,0 +1,9 @@
+Current Problems:
+Missing alot of security checks
+
+Can't accept votes
+Cannot View votes
+
+Make sure that checks are performed for all before insertion
+Help - we don't check if this candidate is in our ballot - allows anyone to access any candidate - check
+change_candidate is adding candidates instead of updating

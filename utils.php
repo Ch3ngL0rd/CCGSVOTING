@@ -30,6 +30,19 @@ function insert_voter($user_id,$ballot_id,$power) {
     VALUES ($user_id,$ballot_id,$power,null)";
 }
 
+// Vote is an array of their votes in order
+function update_vote($ballot_id, $student_id, $vote) {
+    global $connection;
+    $vote_str = implode(",",$vote);
+    $query = "UPDATE VOTER SET Vote = '$vote_str'
+        WHERE BallotID = $ballot_id AND StudentID = $student_id";
+    if ($result = $connection->query($query) === TRUE) {
+        echo "Successful Vote!" . "<br>";
+    } else {
+        echo "Error: " . $sql . "<br>" . $connection->error;
+    }
+}
+
 // Gets highest ballot id
 function get_highest_ballot() {
     return "SELECT MAX(BallotID) FROM BallotInformation";
@@ -56,6 +69,17 @@ function get_ballot_information($ballot_id_array) {
     return [];
 }
 
+// Given a singular ballot_id, fetch info
+function get_ballot($ballot_id) {
+    global $connection;
+    $query = "SELECT * FROM BallotInformation WHERE BallotID = $ballot_id";
+    if ($result = $connection->query($query)) {
+        return $result->fetch_all();
+    }
+    return [];
+}
+
+
 function get_candidates($ballot_id) {
     global $connection;
     $query = "SELECT * FROM Candidate WHERE BallotID = $ballot_id";
@@ -68,7 +92,7 @@ function get_candidates($ballot_id) {
 function change_candidate($candidate_id,$bio) {
     global $connection;
     $query = "UPDATE CANDIDATE SET Bio = '$bio' WHERE StudentID = $candidate_id";
-    if ($connection->query($query) === TRUE) {
+    if ($result = $connection->query($query) === TRUE) {
 
     } else {
         echo "Error: " . $sql . "<br>" . $connection->error;
@@ -168,7 +192,7 @@ function parse_create_ballot($array) {
     
     // Insert student & staff into voting table
     foreach ($students as $individual) {
-        $query = insert_voter($individual,$highest_ballot,1);
+        $query = insert_voter($individual,$highest_ballot+1,1);
         if ($connection->query($query) !== TRUE) {
             echo "Error: " . $sql . "<br>" . $connection->error;
         }

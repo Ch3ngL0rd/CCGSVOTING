@@ -2,8 +2,13 @@
 include '../utils.php';
 include '../userutils.php';
 $ballot_id = $_GET["ballot_id"];
+$user_id = $_GET['user_id'];
 // get list of candidates
 $candidate_info = get_candidates($ballot_id);
+$ballot_info = get_ballot($ballot_id);
+$name = $ballot_info[0][1];
+$description = $ballot_info[0][2];
+$max_votes = $ballot_info[0][3];
 ?>
 
 <!doctype html>
@@ -26,12 +31,17 @@ $candidate_info = get_candidates($ballot_id);
                   <span class="fs-3 fw-bold">Christ Church Grammar School Prefect Voting </span>
                 </div>
             </header>
-            <header class="d-flex flex-wrap justify-content-center">
-                <div class="d-flex align-items-center me-md-auto text-dark">
-                  <span class="fs-4 fw-normal">Christ Church Grammar School Prefect Voting </span>
-                </div>
-            </header>
         </div>
+        <p class="fs-3 text-decoration-underline text-center">
+        <?php
+        echo $name;
+        ?>
+        </p>
+        <p class="fs-6 fst-italic text-center">
+        <?php
+        echo $description;
+        ?>
+        </p>
         <br>
         <div class="container">
             <div class="row align-items-start">
@@ -42,8 +52,11 @@ $candidate_info = get_candidates($ballot_id);
                         ?>
                     </div>
                 </div>
-                <div class="col-3">
-                    Voting
+                <div class="col-3 sticky-top">
+                    <br>
+                    <?php
+                    create_voting($max_votes,$user_id,$ballot_id);
+                    ?>
                 </div>
             </div>
         </div>

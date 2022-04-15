@@ -12,14 +12,6 @@ if (isset($_GET['submit'])) {
 $ballot_id = $_GET["ballot_id"];
 $data = get_candidates($ballot_id);
 ?>
-<!-- <h4>Admin can edit CANDIDATES for the given ballot here</h4> -->
-<nav class="navbar navbar-dark bg-dark flex-row rounded" aria-label="Second navbar example">
-    <div class="container">
-        <a class="navbar-brand" href="second">Candidates</a>
-        <a class="navbar-brand" href="first">Voters</a>
-    </div>
-</nav>
-<br>
 
 <div class="container">
   <div class="row justify-content-start">
