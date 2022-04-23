@@ -1,6 +1,19 @@
 <?php
 include '../utils.php';
 include '../userutils.php';
+
+// Submit logic
+if (isset($_GET['submit'])) {
+    if ($_GET['submit'] == true) {
+        $max_votes = $_GET['max_votes'];
+        $votes = [];
+        foreach (range(1,$max_votes,1) as $number) {
+            array_push($votes,$_GET[$number]);
+        } 
+        update_vote($_GET['ballot_id'], $_GET['user_id'], $votes);
+    }
+}
+
 $data = get_all_ballots($_GET["user_id"]);
 $voted = [];
 $unvoted = [];
@@ -23,20 +36,6 @@ if (count($unvoted) > 0) {
 } else {
     $unvoted_ballot_information = [];
 }
-
-// Submit logic
-if (isset($_GET['submit'])) {
-    if ($_GET['submit'] == true) {
-        $max_votes = $_GET['max_votes'];
-        $votes = [];
-        foreach (range(1,$max_votes,1) as $number) {
-            array_push($votes,$_GET[$number]);
-        } 
-        update_vote($_GET['ballot_id'], $_GET['user_id'], $votes);
-    }
-}
-
-
 
 ?>
 <!doctype html>

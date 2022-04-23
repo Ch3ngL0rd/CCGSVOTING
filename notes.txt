@@ -1,9 +1,35 @@
 Current Problems:
+
+missing comments on code / utils - add in
+utils.php is extremlly messy - clean up functions
+Open to SQLInjection currently
 Missing alot of security checks
+Naming convention is horrible (fetch or get)..?! messy + hard to read
 
-Can't accept votes
-Cannot View votes
+Basic problems with php to be checked
+$_GET['value'] could be defined but be null : ballot_id=
+    - results in sql error (check for this)
 
-Make sure that checks are performed for all before insertion
-Help - we don't check if this candidate is in our ballot - allows anyone to access any candidate - check
-change_candidate is adding candidates instead of updating
+Staff:
+Create Ballot
+- Check if amount of candidates to vote for > candidates
+- Fix apostrophes
+- multiple house selection - dropdown checkboxes
+
+Manage Ballot
+- check if user sending update request is actually owner / or is an admin
+
+View 
+- doing all the processing everytime might hurt? (worried about how we request all the users everytime (could we store on database somewhere..?))
+    - adding up all the results every time is not efficent - store + cache on database results (and have user send update request)
+Thoughts:
+Admin realistically wouldn't check a users vote individually - no point showing (export to excel)
+
+Student:
+Student can vote twice
+Have to check result during insertion into database and not during <form>
+- danger of student editing php raw since we don't use POST 
+
+Notes:
+dynamic pages are php, static html
+add collapsable on admin view for ease of use

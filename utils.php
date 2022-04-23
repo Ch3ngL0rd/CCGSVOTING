@@ -121,6 +121,25 @@ function fetch_ballot_manage($user_id) {
     return [];
 }
 
+function fetch_votes($ballot_id) {
+    global $connection;
+    $query = "SELECT Vote,Power FROM Voter WHERE BallotID = $ballot_id";
+    if ($result = $connection->query($query)) {
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+    return [];
+}
+
+function is_admin($user_id) {
+    global $connection;
+    $query = "SELECT * FROM Admin WHERE AdminID = $user_id";
+    if ($result = $connection->query($query)) {
+        if (count($result->fetch_all()) == 1) {
+            return true;
+        }
+    }
+    return false;
+}
 
 // we need to have a function that returns a list of ids to 
 
@@ -131,6 +150,29 @@ function dummy_students() {
 
 function dummy_staff() {
     return array(18781, 13881, 11751, 15084, 13385, 15640, 18304, 13531, 12740, 13615);
+}
+
+// Returns dictionary of votes per candidate by user_id - expensive
+function calculate_votes($votes_list) {
+    $compiled_votes = [];
+    // For each voter in our ballot
+    foreach ($votes_list as $vote) {
+        // Checks if voter submitted a vote
+        if (isset($vote["Vote"]) == true) {
+            $submitted_votes = explode(",",$vote["Vote"]);
+            foreach ($submitted_votes as $choice) {
+                // If there is no key
+                if (array_key_exists($choice,$compiled_votes) == false) {
+                    $compiled_votes[$choice] = $vote["Power"];
+                } else {
+                    $compiled_votes[$choice] = $compiled_votes[$choice] + $vote["Power"];
+                }
+            }
+        }
+        // echo "<br>";
+        // if $test['a'] ?? null
+    }
+    return $compiled_votes;
 }
 
 // pass in array from create ballot
