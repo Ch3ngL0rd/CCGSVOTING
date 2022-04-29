@@ -25,11 +25,11 @@
       <input type="date" class="form-control" id="end_date" name="end_date"placeholder="YYYY/MM/DD">
     </div>
     <br>
-    <div class="form-group">
+    <!-- <div class="form-group">
       <label for="user_id">User ID</label>
       <input type="number" class="form-control" id="user_id" name="user_id" placeholder="USER ID - Delete once single sign on enabled">
     </div>
-    <br>
+    <br> -->
 
     <div class="form-group">
       <label for="students">House Selected</label>
@@ -86,6 +86,9 @@
     <!-- Constants - not sure better way to include -->
     <input hidden=true name="pageID" value="create">
     <input hidden=true name="submit" value="true">
+    <?php
+    echo "<input hidden=true name='user_id' value='{$user_id}'>";
+    ?>
     <br>
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>

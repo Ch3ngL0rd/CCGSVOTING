@@ -33,7 +33,7 @@ $user_id = $_GET["user_id"]; // used in sidebar & manageBallot, view.php
             if (isset($_GET["submit"])) {
               parse_create_ballot($_GET);
             } else {
-              include 'create.html';
+              include 'create.php';
             }
           } else if ($_GET["pageID"] == "manage") {
             include 'manageBallotView.php';

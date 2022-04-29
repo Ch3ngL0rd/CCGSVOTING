@@ -2,9 +2,9 @@
 include "db_connection.php";
 // Create a ballot
 // Name: String, Information: String, Max Votes: String, Start Date: String, End Date : String, Has_Bio : String 
-function create_ballot($ballot_id,$name,$information,$max_votes,$start_date,$end_date,$has_bio,$user_id) {
+function create_ballot($ballot_id,$name,$information,$max_votes,$start_date,$end_date,$has_bio) {
     return "INSERT INTO BallotInformation (BallotID,Name,Information,MaxVotes,StartDate,EndDate,HasBio,CreatorID)
-    VALUES (".$ballot_id.",'".$name."','".$information."',".$max_votes.",CAST('".$start_date."' AS DATE),CAST('".$end_date."' AS DATE),".$has_bio.",".$user_id.")";
+    VALUES (".$ballot_id.",'".$name."','".$information."',".$max_votes.",CAST('".$start_date."' AS DATE),CAST('".$end_date."' AS DATE),".$has_bio.")";
 }
 
 // Insert a candidate into a ballot
@@ -114,7 +114,7 @@ function fetch_student($student_id) {
 
 function fetch_ballot_manage($user_id) {
     global $connection;
-    $query = "SELECT * FROM BallotInformation WHERE CreatorID = $user_id";
+    $query = "SELECT * FROM BallotInformation";
     if ($result = $connection->query($query)) {
         return $result->fetch_all();
     }
@@ -190,7 +190,7 @@ function parse_create_ballot($array) {
     }
 
     // Individual checks to ensure that user entered into correctly
-    $regex = "@[0-9]{4}\/[0-9]{2}\/[0-9]{2}@";
+    $regex = "@[0-9]{4}\-[0-9]{2}\-[0-9]{2}@";
     if (preg_match($regex,$array['start_date']) == false || preg_match($regex,$array['end_date']) == false) {
         echo "Please format date correctly.";
         $failed = true;

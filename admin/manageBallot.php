@@ -17,7 +17,7 @@ $data = get_candidates($ballot_id);
   <div class="row justify-content-start">
       <div class="col-5">
           <table class="table table-striped table-hover">
-              <caption>Ballots</caption>
+              <caption>Candidates</caption>
               <thead>
                   <tr>
                       <th scope="col">ID</th>
