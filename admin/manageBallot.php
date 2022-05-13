@@ -51,7 +51,7 @@ $data = get_candidates($ballot_id);
                     <div class="form-group">
                         <label for="information">Bio</label>
                         <textarea class="form-control form-control-sm" id="information" rows="3" name="information"
-                        placeholder="I appreciate the oppotunity for leading the house. I love being a house prefect!"></textarea>
+                        placeholder="I  appreciate the oppotunity for leading the house. I love being a house prefect!"></textarea>
                     </div>
                     <br>
                     <input hidden=true name="pageID" value="manageBallot">

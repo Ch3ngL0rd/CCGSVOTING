@@ -24,6 +24,7 @@ foreach ($data as $row) {
         array_push($unvoted,$row);
     }
 }
+
 if (count($voted) > 0) {
     $voted_id_information = array_map(fn($value): int => $value[2],$voted);
     $voted_ballot_information = get_ballot_information($voted_id_information);
@@ -50,12 +51,6 @@ if (count($unvoted) > 0) {
         <link rel="stylesheet" href="custom.css">
 
         <title>CCGS VOTE</title>
-        <script>
-            function enter_ballot(ballot_id,user_id) {
-                console.log(ballot_id,user_id);
-                alert("entering ballot "+ballot_id+" with ID "+user_id);
-            }
-        </script>
     </head>
     <body>
         <div class="container">

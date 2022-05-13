@@ -33,3 +33,7 @@ Have to check result during insertion into database and not during <form>
 Notes:
 dynamic pages are php, static html
 add collapsable on admin view for ease of use
+
+
+After First "Checkin"
+Randomised Prefects - Not always first pick

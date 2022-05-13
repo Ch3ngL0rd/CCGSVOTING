@@ -51,7 +51,7 @@ function get_highest_ballot() {
 function get_all_ballots($student_id) {
     global $connection;
     // fetches all ballots from 
-    $query = "SELECT * FROM Voter WHERE StudentID=$student_id";
+    $query = "SELECT * FROM Voter WHERE UserID=$student_id";
     if ($result = $connection->query($query)) {
         return $result->fetch_all();
     }
