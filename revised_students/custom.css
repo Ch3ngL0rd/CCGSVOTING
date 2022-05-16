@@ -5,6 +5,8 @@
     margin-bottom : 2vh;
     margin-left : 1vw;
     margin-right : 1vw;
+    min-width: 200px;
+    min-height : 300px;
 }
 
 .ballot-card:hover{

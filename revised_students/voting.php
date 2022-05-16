@@ -20,7 +20,7 @@ $ballot_id = $_GET["ballot_id"];
 // get list of candidates
 $candidate_info = student_get_all_candidate_ballotid($ballot_id);
 $ballot_info = student_get_one_ballotinfo_ballotid($ballot_id);
-
+$landing_href = "landing.php?house=$house&year=$year&user_id=$user_id";
 // print_r($candidate_info); echo "<br>";
 // print_r($ballot_info); echo "<br>";
 
@@ -38,7 +38,7 @@ if ($ballot_info['Randomised'] == 1) {
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
         <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="../components/bootstrap.min.css">
+        <link rel="stylesheet" href="../components/bootstrap/css/bootstrap.min.css">
         <link rel="stylesheet" href="custom.css">
         <title>CCGS VOTE</title>
     </head>
@@ -50,7 +50,7 @@ if ($ballot_info['Randomised'] == 1) {
         </div> -->
         <div class="container-fluid">
             <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-                <div href="/" class="d-flex align-items-center me-md-auto text-dark text-decoration-none">
+                <div class="d-flex align-items-center me-md-auto text-dark text-decoration-none" onclick="location.href='<?php echo $landing_href;?>'" style="cursor: pointer;">
                   <img src="../components/ccgs-logo.png" class="me-4" width="50" height="90"></img>
                   <span class="fs-3 fw-bold">Christ Church Grammar School Prefect Voting </span>
                 </div>
@@ -240,6 +240,6 @@ if ($ballot_info['Randomised'] == 1) {
         </script>
 
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="../components/bootstrap.min.js"></script>
+        <script src="../components/bootstrap/js/bootstrap.min.js"></script>
     </body>
 </html>
