@@ -1,0 +1,26 @@
+body, html { 
+    overflow-x: hidden; 
+    overflow-y: auto;
+}
+
+.ballottr:hover{
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+}
+
+.adminballotimage {
+    width : 22vw;
+    height : 11vh;
+    min-width: 300px;
+    min-height : 150px;
+    object-fit: cover;
+}
+
+.adminbanner {
+    width : 22vw;
+    height : 11vh;
+    min-width: 300px;
+    min-height : 150px;
+    object-fit: cover;
+}
+

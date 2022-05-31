@@ -8,17 +8,11 @@ include '../revised_userutils.php';
 date_default_timezone_set('Australia/Perth');
 
 // Set all variables
-// Staff do not have year
-if (isset($_GET["year"])) {
-    $year = $_GET["year"];
-} else {
-    $year = '';
-}
-if (isset($_GET["ballot_id"])) {
-    $ballot_id = $_GET["ballot_id"];
-} else {
-    $ballot_id = -1;
-}
+// if staff, we set as -1;
+$year = (isset($_GET['year'])) ? $_GET["year"] : -1;
+// if we are not given a ballot_id, we set it as -1
+$ballot_id = (isset($_GET['ballot_id'])) ? $_GET['ballot_id'] : -1;
+
 $house = $_GET["house"];
 $user_id = $_GET["user_id"];
 $user_info = array(
@@ -30,12 +24,9 @@ $current_date = date("Y-m-d h:i:s");
 $open_time_ballots = [];
 $availiable_ballots = [];
 $closed_ballots = [];
-
 // Get all ballots given students house + year
 $data = student_get_all_ballot($house,$year);
-
 $vote_state = -1;
-
 if (isset($_GET["votes"]) && $ballot_id != -1) {
     if ($_GET["votes"] == '') {
         echo "No votes submitted<br>";
@@ -44,13 +35,13 @@ if (isset($_GET["votes"]) && $ballot_id != -1) {
         $vote_state = student_submit_votes($_GET["votes"],$ballot_id,$user_info);
     }
 }
-
 // Sort ballots given their time
 foreach ($data as $ballot) {
     switch (check_ballot_time($ballot,$current_date)) {
         case -1:
-            // We ignore since the user doesn't have to see ballots before open - can change
-            break;
+            // These ballots are before the current date
+            // We skip this ballot
+            continue 2;
         case 0:
             $ballot["Time"] = True;
             break;
@@ -72,14 +63,14 @@ foreach ($data as $ballot) {
         }
     }
 
-    if ($is_in_year == True) {
+    // If they are in the right year, or they are staff
+    if ($is_in_year == True || $year != -1) {
         if ($ballot["Voted"] == False && $ballot["Time"] == True) {
             array_push($availiable_ballots,$ballot);
         } else {
             array_push($closed_ballots,$ballot);
         }
     }
-
 }
 
 // We have sorted ballots into available (open + unvoted) $availiable_ballots

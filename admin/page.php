@@ -9,7 +9,7 @@ $user_id = $_GET["user_id"]; // used in sidebar & manageBallot, view.php
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Control Panel</title>
     <!-- Bootstrap core CSS -->
-    <link href="../components/bootstrap.min.css" rel="stylesheet">
+    <link href="../components/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   </head>
 <body>
     

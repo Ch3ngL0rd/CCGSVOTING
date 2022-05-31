@@ -1,12 +1,12 @@
 .ballot-card {
     width: 22vw;
-    height : 25vh;
+    height : 28vh;
     margin-top : 2vh;
     margin-bottom : 2vh;
     margin-left : 1vw;
     margin-right : 1vw;
-    min-width: 200px;
-    min-height : 300px;
+    min-width: 300px;
+    min-height : 350px;
 }
 
 .ballot-card:hover{
@@ -55,4 +55,12 @@
 .candidate-card:hover{
     transform: scale(1.15);
     box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+}
+
+.ballot-image {
+    width : 22vw;
+    height : 11vh;
+    min-width: 300px;
+    min-height : 150px;
+    object-fit: cover;
 }

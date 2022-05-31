@@ -24,4 +24,4 @@ if (!$connection)
    die();
 }
 
-echo 'Successfully connected!<br>';
+// echo 'Successfully connected!<br>';

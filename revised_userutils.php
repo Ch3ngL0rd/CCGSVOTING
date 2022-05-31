@@ -3,6 +3,9 @@
 // Name, Description, Image, Time Closing
 function student_create_ballot($ballot,$user_info) {
     echo '<div class="card ballot-card text-center rounded">';
+        echo "<div class='d-flex justify-content-center'>";
+        echo "<img class='card-img-top ballot-image' src='".htmlspecialchars($ballot["Photo"])."'>";
+        echo "</div>";
         echo '<div class="card-body">';
             echo "<h3 class='card-title'>" . $ballot["Name"] . "</h3>";
             // echo "<br>";
@@ -19,7 +22,6 @@ function student_create_ballot($ballot,$user_info) {
         } else {
             echo "Ballot Closed - <a class='text-success'>Vote Submitted</a>";
         }
-            
         echo "</div>";
     echo '</div>';
 }
