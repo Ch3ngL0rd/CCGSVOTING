@@ -1,0 +1,75 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2638
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Menlo-Regular;\f2\fnil\fcharset0 AppleColorEmoji;
+}
+{\colortbl;\red255\green255\blue255;\red255\green255\blue255;\red146\green26\blue32;}
+{\*\expandedcolortbl;;\cssrgb\c100000\c100000\c100000;\cssrgb\c64706\c16471\c16471;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid1\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid101\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid2}
+{\list\listtemplateid3\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{hyphen\}}{\leveltext\leveltemplateid201\'01\uc0\u8259 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid3}
+{\list\listtemplateid4\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{hyphen\}}{\leveltext\leveltemplateid301\'01\uc0\u8259 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid4}
+{\list\listtemplateid5\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{hyphen\}}{\leveltext\leveltemplateid401\'01\uc0\u8259 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid5}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}{\listoverride\listid3\listoverridecount0\ls3}{\listoverride\listid4\listoverridecount0\ls4}{\listoverride\listid5\listoverridecount0\ls5}}
+\paperw11900\paperh16840\margl1440\margr1440\vieww28600\viewh14860\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Houses:\
+There are 8 houses in CCGS. Craigie,Hill,Jupp,Moyes,Noake,Queenslea,Rosmey,Wolsey\
+All students belong to a house. \
+The problem is that some staff have no house. We will represent these staff will N, standing for null. When a staff logs in without a house, we will set their house as N, and we can use the same operations as before.\
+Valid Houses: C,H,J,M,N,Q,R,W,N\
+Adding all houses to a vote will just add all 9 houses. \
+\
+Adding Boarders:\
+To add only boarders to a vote we will have to change the ballot information to add an only boarders field. That means adding a checkbox in the create ballot form (initialised to null). When a student is logging into the landing page, we have to ask the database whether he is a boarding student, since we do not recieve that information when they log in (only student id + year + house from azure..?) ( since we are going through nexus i believe that we might have to read all the information from the database based off their used id). Only students can be boarders - only filter ballots if there is no year\
+\pard\tx220\tx720\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\li720\fi-720\pardirnatural\partightenfactor0
+\ls1\ilvl0\cf0 {\listtext	1.	}\ul Add a boarders field to the database\
+\ls1\ilvl0\ulnone {\listtext	2.	}\ul Add a checkbox in the form\ulnone \
+{\listtext	3.	}\ul Update insert into database code\ulnone \
+{\listtext	4.	}\ul Ask database when a student logs in if they are a boarder\ulnone \
+{\listtext	5.	}\ul Filter ballots depending if they are a boarder or not \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \ulc0 \
+\ulnone Adding candidates from our student view\
+We need to get data from our studentview when inserting candidates. Using their student id, we should be able to simply query for the correct student\
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf0 \cb2 \expnd0\expndtw0\kerning0
+multi_query\
+$sql = \cf3 "INSERT INTO MyGuests (firstname, lastname, email)\cb1 \
+\cb2 VALUES ('John', 'Doe', 'john@example.com');"\cf0 ;\cb1 \
+\cb2 $sql .= \cf3 "INSERT INTO MyGuests (firstname, lastname, email)\cb1 \
+\cb2 VALUES ('Mary', 'Moe', 'mary@example.com');"\cf0 ;
+\f0 \cb1 \kerning1\expnd0\expndtw0 \
+\pard\tx220\tx720\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\li720\fi-720\pardirnatural\partightenfactor0
+\ls2\ilvl0\cf0 {\listtext	1.	}Using submitted student id -> request data\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \ul \
+\ulnone Adding individual voters\
+We require the functionality to add an individual id as a voter to one ballot.\
+This is problem currently since we are storing the valid voters in the ballotinformation => check that year is in year groups, house in house groups\
+Using this data structure, there is no way to add an individual id\
+Additionally, when we check that a voter is in a ballot / has voted, we see if there is an entry in the voter database\
+We require another table that allows us to \'91bypass\'92 the checks and see if they exist in the database\
+\
+Possible Solutions:\
+1. Insert into the Voters table a \'91null vote\'92 -> A vote with -1 => we can check the voting table to see if they are in the ballot, and update it when it when they vote & remove the -1\
+\pard\tx220\tx720\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\li720\fi-720\pardirnatural\partightenfactor0
+\ls3\ilvl0\cf0 {\listtext	\uc0\u8259 	}This solution is a little problematic -> it is a bit messy although it will work (we shouldn\'92t use the voting table to check if they are in the ballot -> we use the ballot only for voting)\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 2. Create a new table that stores additional voters per ballot => we do a double check to our ballotinformation table + the new table to see if they are a valid voter\
+\pard\tx220\tx720\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\li720\fi-720\pardirnatural\partightenfactor0
+\ls4\ilvl0\cf0 {\listtext	\uc0\u8259 	}Neater solution..? kind of sounds like our old solution that we had to change 
+\f2 \uc0\u55357 \u56877 
+\f0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \
+\
+\
+Refactor getting ballot code :(\
+\
+\
+Student Pipeline\
+Login\
+\pard\tx220\tx720\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\li720\fi-720\pardirnatural\partightenfactor0
+\ls5\ilvl0\cf0 {\listtext	\uc0\u8259 	}StudentID, House, Year\
+}

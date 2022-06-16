@@ -27,14 +27,28 @@ function student_create_ballot($ballot,$user_info) {
 }
 
 // Outputs html from candidate object
-function student_create_candidate($candidate,$index) {
-    echo "<div onclick='add_vote(\"".$candidate["Name"]."\",".$candidate["StudentID"].",$index)' class='card candidate-card text-center rounded' id='candidatecard$index'>";
+function student_create_candidate_nocaption($candidate,$index) {
+    $name = $candidate["Last"].", ".$candidate["Preferred"];
+    echo "<div onclick='add_vote(\"$name\",".$candidate["StudentID"].",$index)' class='card candidate-card text-center rounded' id='candidatecard$index'>";
         echo "<img src='./portrait.png' draggable='false' class='card-img-top mx-auto student-image'></img>";
         echo "<img src='./green_tick.png' draggable='false' class='student-tick' id='candidatetick$index'></img>";
         echo '<div class="card-body">';
-            echo "<h3 class='card-title'>" . $candidate["Name"] . "</h3>";
+            echo "<h3 class='card-title'>$name</h3>";
         echo '</div>';
         echo "<div class='card-footer fst-italic'>" . $candidate["Bio"] . "</div>";
     echo '</div>';    
 }
+
+function student_create_candidate_caption($candidate,$index) {
+    $name = $candidate["Last"].", ".$candidate["Preferred"];
+    echo "<div onclick='add_vote(\"$name\",".$candidate["StudentID"].",$index)' class='card candidate-card text-center rounded' id='candidatecard$index'>";
+        echo "<img src='./portrait.png' draggable='false' class='card-img-top mx-auto student-image'></img>";
+        echo "<img src='./green_tick.png' draggable='false' class='student-tick' id='candidatetick$index'></img>";
+        echo '<div class="card-body">';
+            echo "<h3 class='card-title'>$name</h3>";
+        echo '</div>';
+        echo "<div class='card-footer fst-italic'>" . $candidate["Bio"] . "</div>";
+    echo '</div>';    
+}
+
 ?>

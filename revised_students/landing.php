@@ -12,20 +12,26 @@ date_default_timezone_set('Australia/Perth');
 $year = (isset($_GET['year'])) ? $_GET["year"] : -1;
 // if we are not given a ballot_id, we set it as -1
 $ballot_id = (isset($_GET['ballot_id'])) ? $_GET['ballot_id'] : -1;
+// If the staff / student has no house, they are "N" - null house
+$house = (isset($_GET['house'])) ? $_GET["house"] : "N";
 
-$house = $_GET["house"];
 $user_id = $_GET["user_id"];
 $user_info = array(
     "UserID" => $user_id,
     "Year" => $year,
     "House" => $house);
 
-$current_date = date("Y-m-d h:i:s");
+$current_date = date("Y-m-d H:i:s");
+
 $open_time_ballots = [];
 $availiable_ballots = [];
 $closed_ballots = [];
+// If they are a staff don't check for boarder, set as not boarder
+$is_boarder = ($year != -1) ? student_check_isboarder($user_id) : 0;
 // Get all ballots given students house + year
-$data = student_get_all_ballot($house,$year);
+$data = student_get_all_ballot($house,$year,$is_boarder);
+
+// Vote state is information about if a student voted / if it passed
 $vote_state = -1;
 if (isset($_GET["votes"]) && $ballot_id != -1) {
     if ($_GET["votes"] == '') {
@@ -94,7 +100,7 @@ foreach ($data as $ballot) {
     <body>
         <div class="container-fluid">
             <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-                <div href="/" class="d-flex align-items-center me-md-auto text-dark text-decoration-none">
+                <div href="/" class="d-flex align-items-center me-md-auto text-dark text-decoration-none mx-auto">
                   <img src="../components/ccgs-logo.png" class="me-4" width="50" height="90"></img>
                   <span class="fs-3 fw-bold">Christ Church Grammar School Prefect Voting </span>
                 </div>
@@ -113,6 +119,9 @@ foreach ($data as $ballot) {
                     break;
                 case 2:
                     include "unassignedvote.html";
+                    break;
+                case 4:
+                    include "votingclosed.html";
                     break;
             }
             ?>

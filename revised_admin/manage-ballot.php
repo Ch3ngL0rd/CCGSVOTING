@@ -1,6 +1,4 @@
 <?php
-// There are alot of things going on in this page
-// We have 
 
 $ballot_id = (isset($_GET["ballot_id"])) ? $_GET["ballot_id"] : -1;
 $user_id = (isset($_GET['user_id'])) ? $_GET['user_id'] : '-1';
@@ -24,12 +22,17 @@ if (isset($_GET["type"])) {
 	$data = $_GET['data'];
 	if ($type == 'upload') {
 		$students = explode("\n", $data);
+		$cleaned_students = [];
 		foreach ($students as $student) {
 			$split_student = explode(",",$student,2);
 			$student_id = $split_student[0];
 			$caption = (count($split_student) == 2) ? $split_student[1] : '';
-			admin_update_one_candidate_caption($ballot_id,$student_id,$caption);
+			array_push($cleaned_students,[$student_id,$caption]);
+			// admin_update_one_candidate_caption($ballot_id,$student_id,$caption);
 		}
+
+		admin_update_bulk_candidate_caption($ballot_id,$cleaned_students);
+
 		$message = "Inserted new candidates + captions";
 	} else if ($type == 'remove') {
 		$students = explode(",", $data);
@@ -123,6 +126,7 @@ $images = array_merge(array_merge(glob($dirname."*.png"),glob($dirname."*.jpg"))
 				echo "<p class='fs-6'>Start Date: " . substr($ballot["StartDate"],0,10) . "</p>";
 				echo "<p class='fs-6'>Start Date: " . substr($ballot["EndDate"],0,10)  . "</p>";
 				echo "<p class='fs-6'>Captions: " . ($ballot["HasBio"] ? 'Enabled' : 'Not Enabled') . "</p>";
+				echo "<p class='fs-6'>Only Boarders: " . ($ballot["OnlyBoarders"] ? 'Enabled' : 'Not Enabled') . "</p>";
 				?>
 			</div>
 		</div>
@@ -144,7 +148,7 @@ $images = array_merge(array_merge(glob($dirname."*.png"),glob($dirname."*.jpg"))
 							// href='page.php?pageID=view&user_id={$user_id}
 							echo "<tr>";
 								echo "<td>".$candidate['StudentID']."</td>";
-								echo "<td>".$candidate['Name']."</td>";
+								echo "<td>".$candidate['Last'].", ".$candidate['Preferred']."</td>";
 								echo "<td>".$candidate['Bio']."</td>";
 							echo "</tr>";
 						}

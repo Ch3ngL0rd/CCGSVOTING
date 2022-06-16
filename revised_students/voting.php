@@ -50,7 +50,7 @@ if ($ballot_info['Randomised'] == 1) {
         </div> -->
         <div class="container-fluid">
             <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-                <div class="d-flex align-items-center me-md-auto text-dark text-decoration-none" onclick="location.href='<?php echo $landing_href;?>'" style="cursor: pointer;">
+                <div class="d-flex align-items-center me-md-auto text-dark text-decoration-none mx-auto" onclick="location.href='<?php echo $landing_href;?>'" style="cursor: pointer;">
                   <img src="../components/ccgs-logo.png" class="me-4" width="50" height="90"></img>
                   <span class="fs-3 fw-bold">Christ Church Grammar School Prefect Voting </span>
                 </div>
@@ -75,9 +75,16 @@ if ($ballot_info['Randomised'] == 1) {
                     <div class="card-deck d-flex justify-content-around flex-wrap">
                         <?php
                         $index = 0;
-                        foreach ($candidate_info as $candidate) {
-                            student_create_candidate($candidate,$index);
-                            $index += 1;
+                        if ($ballot_info['HasBio'] == 1) {
+                            foreach ($candidate_info as $candidate) {
+                                student_create_candidate_caption($candidate,$index);
+                                $index += 1;
+                            }
+                        } else {
+                            foreach ($candidate_info as $candidate) {
+                                student_create_candidate_nocaption($candidate,$index);
+                                $index += 1;
+                            }
                         }
                         ?>
                     </div>
@@ -186,11 +193,10 @@ if ($ballot_info['Randomised'] == 1) {
             }
 
             function search(value) {
-                console.log(value);
                 if (value == '') {
                     for (let i = 0; i < num_candidates; i++) {
                         let candidate_card = document.getElementById(`candidatecard${i}`);
-                        candidate_card.style.display = 'initial';
+                        candidate_card.style.display = '';
                     }
                     return;
                 }
@@ -208,8 +214,9 @@ if ($ballot_info['Randomised'] == 1) {
                         }
                         })
                     })
+                    console.log(candidate_card.style.display);
                     if (contains) {
-                        candidate_card.style.display = 'initial';
+                        candidate_card.style.display = '';
                     } else {
                         candidate_card.style.display = 'none';
                     }

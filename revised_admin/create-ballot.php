@@ -53,6 +53,7 @@
 						<option>10</option>
 						<option>11</option>
 						<option>12</option>
+						<option value="-1">All Years</option>
 					</select>
 				</div>
 				<div class="col-6">
@@ -67,6 +68,7 @@
 						<option value="Q">Queenslea</option>
 						<option value="R">Rosmey</option>
 						<option value="W">Wolsey</option>
+						<option value="A">All Houses</option>
 					</select>
 				</div>
 			</div>
@@ -84,6 +86,7 @@
 						<option value="Q">Queenslea</option>
 						<option value="R">Rosmey</option>
 						<option value="W">Wolsey</option>
+						<option value="A">All Houses</option>
 					</select>
 				</div>
 				<div class="col-6">
@@ -139,6 +142,10 @@
 					<div class="form-check">
 						<label class="form-check-label" for="randomised">Randomised Voting Screen</label>
 						<input type="checkbox" class="form-check-input" id="randomised" name="randomised">
+					</div>
+					<div class="form-check">
+						<label class="form-check-label" for="boarders">Only Boarders</label>
+						<input type="checkbox" class="form-check-input" id="boarders" name="boarders">
 					</div>
 				</div>
 				<div class="col">

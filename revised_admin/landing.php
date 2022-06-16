@@ -24,6 +24,7 @@ if ($page == 'ballotsubmit') {
     $staff_house = (isset($_GET["staff_house"])) ? $_GET["staff_house"] : [];
     $staff_department = (isset($_GET["staff_department"])) ? $_GET["staff_department"] : [];
     $bio = (isset($_GET['bio'])) ? true : false;
+    $only_boarders = (isset($_GET['boarders'])) ? true : false;
     $randomised = (isset($_GET['randomised'])) ? true : false;
     $edit = ($_GET['edit_ballot_id']!='') ? $_GET['edit_ballot_id'] : -1;
     $ballot_form = array(
@@ -40,6 +41,7 @@ if ($page == 'ballotsubmit') {
         "StaffHouse" => $staff_house,
         "staff_department" => $staff_department,
         "HasBio" => $bio,
+        "OnlyBoarders" => $only_boarders,
         "Randomised" => $randomised,
         "BallotID" => $edit,
     );

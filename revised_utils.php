@@ -16,18 +16,21 @@ include "db_connection.php";
 
 // Returns all ballots for a student given
 // their house and year group
-function student_get_all_ballot($house,$year) {
+function student_get_all_ballot($house,$year,$is_boarder) {
     global $connection;
-
     // We can use LIKE with house since all are distinct
     // Cannot use LIKE for year since year '2' may appear in 12
     // If student
     $query = "SELECT * FROM BallotInformation 
-    WHERE House LIKE '%$house%' AND Year LIKE '%$year%'";
+    WHERE House LIKE '%$house%' AND 
+    Year LIKE '%$year%'";
     // If teacher / staff - no year
     if ($year == -1) {
         $query = "SELECT * FROM BallotInformation 
         WHERE StaffHouse LIKE '%$house%'";
+    } else if ($is_boarder == 0) {
+        // If they are not a teacher check if they are a boarder
+        $query .= " AND OnlyBoarders = 0";
     }
     $result = $connection->query($query);
 
@@ -123,6 +126,18 @@ function student_submit_one_vote($ballot_id,$candidate_id,$power,$user_info,$pre
 function student_submit_votes($votes,$ballot_id,$user_info) {
     // Check if user is assigned to ballot
     $ballot_info = student_get_one_ballotinfo_ballotid($ballot_id);
+
+
+    // Check that vote is within time
+    date_default_timezone_set('Australia/Perth');
+    $current_date = date("Y-m-d H:i:s");
+
+    // Voting is not open if not 0
+    if (check_ballot_time($ballot_info,$current_date) != 0) {
+        return 4;
+    }
+
+
     // We check that user house is in ballot information
     $houses = explode(",",$ballot_info["House"]);
     $is_in_house = False;
@@ -170,6 +185,20 @@ function student_submit_votes($votes,$ballot_id,$user_info) {
 
 
     return 0;
+}
+
+// Returns true when student is a boarder
+function student_check_isboarder($user_id) {
+    global $connection;
+
+    $query = "SELECT Boarding FROM StudentView
+    WHERE StudentID = $user_id";
+    $result = $connection->query($query);
+    if ($result->num_rows == 0) {
+        echo "Error...Student Undefined<br>";
+        return false;
+    }
+    return $result->fetch_assoc()["Boarding"] == 1;
 }
 
 // Returns errors - if empty then valid
@@ -280,14 +309,33 @@ function admin_submit_one_ballot($ballot_form) {
     $start_date = date('Y-m-d H:i:s', strtotime($ballot_form["start_date"].' '.$ballot_form['start_time']));
     $end_date = date('Y-m-d H:i:s', strtotime($ballot_form["end_date"].' '.$ballot_form['end_time']));
 
+    // Change All Houses + Year Groups into indvidual houses
+    foreach ($ballot_form['House'] as $house) {
+        if ($house == "A") {
+            $ballot_form['House'] = ['C,H,J,M,N,Q,R,W,N'];
+            break;
+        }
+    }
+    foreach ($ballot_form['StaffHouse'] as $house) {
+        if ($house == "A") {
+            $ballot_form['StaffHouse'] = ['C,H,J,M,N,Q,R,W,N'];
+            break;
+        }
+    }
+    foreach ($ballot_form['Year'] as $year) {
+        if ($year == -1) {
+            $ballot_form['Year'] = ['7,8,9,10,11,12'];
+            break;
+        }
+    }
     $query = sprintf(
         "INSERT INTO BallotInformation 
-        (Name,Information,MaxVotes,Power,Randomised,StartDate,EndDate,HasBio,StaffHouse,House,Year)
+        (Name,Information,MaxVotes,Power,Randomised,OnlyBoarders,StartDate,EndDate,HasBio,StaffHouse,House,Year)
         VALUES
-        ('%s','%s',%d,%d,%d,'%s','%s',%d,'%s','%s','%s')",
+        ('%s','%s',%d,%d,%d,%d,'%s','%s',%d,'%s','%s','%s')",
     mysqli_real_escape_string($connection,$ballot_form["Name"]),
     mysqli_real_escape_string($connection,$ballot_form["Information"]),
-    $ballot_form["MaxVotes"],$ballot_form["Power"],$ballot_form["Randomised"],
+    $ballot_form["MaxVotes"],$ballot_form["Power"],$ballot_form["Randomised"],$ballot_form["OnlyBoarders"],
     $start_date,$end_date,
     $ballot_form["HasBio"],
     implode(',',$ballot_form["StaffHouse"]),implode(',',$ballot_form["House"]),
@@ -327,7 +375,7 @@ function admin_check_id_admin($user_id) {
 function admin_update_one_candidate_caption($ballot_id,$student_id,$caption) {
     global $connection;
     $query = sprintf(
-        "INSERT INTO CANDIDATE (StudentID,BallotID,Name,Bio) VALUES (%s,%s,'TestName','%s')
+        "INSERT INTO CANDIDATE (StudentID,BallotID,Bio,Preferred,Last) VALUES (%s,%s,'%s','Johnny','Smith')
         ON DUPLICATE KEY UPDATE Bio = '%s'",
     $student_id,$ballot_id,
     mysqli_real_escape_string($connection,$caption),
@@ -340,6 +388,37 @@ function admin_update_one_candidate_caption($ballot_id,$student_id,$caption) {
     } else {
         return true;
     }
+}
+
+// Data is an array of student ids + caption
+function admin_update_bulk_candidate_caption($ballot_id,$data) {
+    global $connection;
+    $query = '';
+    foreach ($data as $candidate) {
+        if ($candidate[0] == '') {
+            continue;
+        }
+        $student_id = $candidate[0];
+        $caption = $candidate[1];
+        $query .= sprintf(
+            "INSERT INTO CANDIDATE (StudentID,BallotID,Bio,Preferred,Last)
+            SELECT %s,%s,'%s',StudentView.Preferred, StudentView.Last
+            FROM StudentView
+            WHERE StudentView.StudentID = %s
+            ON DUPLICATE KEY UPDATE Bio = '%s';",
+            $student_id,$ballot_id,
+            mysqli_real_escape_string($connection,$caption),
+            $student_id,
+            mysqli_real_escape_string($connection,$caption)
+        );
+    };
+    $connection->multi_query($query);
+    // We have to store all our values
+    do {
+        if ($res = $connection->store_result()) {
+          $res->free();
+        }
+    } while ($connection->more_results() && $connection->next_result());   
 }
 
 function admin_remove_candidate($ballot_id,$student_id) {
